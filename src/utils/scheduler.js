@@ -45,7 +45,9 @@ export const generateSchedule = (tasks, fixedEvents, settings) => {
 
   // 3. Dopasuj zadania elastyczne
   for (const task of flexibleTasks) {
-    let durationRemaining = task.duration;
+    let rawDuration = task.duration;
+    // Blokujemy minimalny czas na macierzy na 30m (pół pozycji kalendarzowej), dla zachowania czytelności bloku
+    let durationRemaining = Math.max(30, rawDuration);
     let placed = false;
 
     // Próbujemy dopasować zadanie

@@ -1,0 +1,21 @@
+{
+  "name": "Inteligentny Planer Dnia",
+  "short_name": "Planer",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#00ffcc",
+  "description": "Narzędzie do automatycznego harmonogramowania dnia z elementami produktywności.",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIiBmaWxsPSIjMGEwYTBhIiAvPzxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjMwIiBmaWxsPSIjMDBmZmNjIiBvcGFjaXR5PSIwLjEiIC8+PHBhdGggZD0iTTUwIDEwIEw5MCAzMCBMODAgOTAgTDMwIDgwIFoiIGZpbGw9IiNmZjRkNGQiIG9wYWNpdHk9IjAuMSIgLz48cGF0aCBkPSJNMzAgNTAgTDUwIDYwIEw4MCAyMCIgc3Ryb2tlPSIjMDBmZmNjIiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiIC8+PC9zdmc+",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIiBmaWxsPSIjMGEwYTBhIiAvPzxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjMwIiBmaWxsPSIjMDBmZmNjIiBvcGFjaXR5PSIwLjEiIC8+PHBhdGggZD0iTTUwIDEwIEw5MCAzMCBMODAgOTAgTDMwIDgwIFoiIGZpbGw9IiNmZjRkNGQiIG9wYWNpdHk9IjAuMSIgLz48cGF0aCBkPSJNMzAgNTAgTDUwIDYwIEw4MCAyMCIgc3Ryb2tlPSIjMDBmZmNjIiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiIC8+PC9zdmc+",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
