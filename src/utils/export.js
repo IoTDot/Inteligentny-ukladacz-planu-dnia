@@ -43,12 +43,13 @@ export const generateICS = (items) => {
 };
 
 export const downloadICS = (items, filename = 'plan_dnia.ics') => {
-  if (!items || items.length === 0) {
-    alert("Brak zaplanowanych zadań do eksportu.");
+  const activeItems = items.filter(item => !item.completed);
+  if (!activeItems || activeItems.length === 0) {
+    alert("Brak nieukończonych zadań do eksportu.");
     return;
   }
   
-  const content = generateICS(items);
+  const content = generateICS(activeItems);
   const blob = new Blob([content], { type: 'text/calendar;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   

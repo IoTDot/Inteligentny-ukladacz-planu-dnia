@@ -55,6 +55,8 @@ function App() {
     localStorage.setItem('app-player-stats', JSON.stringify(playerStats));
   }, [playerStats]);
 
+  const [deletedTask, setDeletedTask] = useState(null);
+
   const addTask = (task) => {
     setTasks(prev => [...prev, { ...task, completed: false }]);
   };
@@ -62,10 +64,18 @@ function App() {
   const toggleTaskCompletion = (id) => {
     setTasks(prev => prev.map(t => {
       if (t.id === id) {
+        const xpGained = (4 - (t.priority || 2)) * 10;
         if (!t.completed) {
-          const xpGained = (4 - (t.priority || 2)) * 10;
+          // Zaznaczenie – dodaj XP
           setPlayerStats(prevStats => {
             const newXp = prevStats.xp + xpGained;
+            const newLevel = Math.floor(newXp / 100) + 1;
+            return { xp: newXp, level: newLevel };
+          });
+        } else {
+          // Odznaczenie – odejmij XP (minimum 0)
+          setPlayerStats(prevStats => {
+            const newXp = Math.max(0, prevStats.xp - xpGained);
             const newLevel = Math.floor(newXp / 100) + 1;
             return { xp: newXp, level: newLevel };
           });
@@ -87,7 +97,20 @@ function App() {
   };
 
   const deleteTask = (id) => {
-    setTasks(prev => prev.filter(t => t.id !== id));
+    const taskToDelete = tasks.find(t => t.id === id);
+    if (taskToDelete) {
+      setDeletedTask(taskToDelete);
+      setTasks(prev => prev.filter(t => t.id !== id));
+      // Auto-ukryj toast po 5 sekundach
+      setTimeout(() => setDeletedTask(prev => prev && prev.id === taskToDelete.id ? null : prev), 5000);
+    }
+  };
+
+  const undoDelete = () => {
+    if (deletedTask) {
+      setTasks(prev => [...prev, deletedTask]);
+      setDeletedTask(null);
+    }
   };
 
   const pinTask = (id, startMin, endMin) => {
@@ -123,7 +146,23 @@ function App() {
     return generateSchedule(tasks, tasks.filter(t => t.type === 'fixed'), settings);
   }, [tasks, settings]);
 
-  const activeTask = scheduledItems.find(item => !item.completed) || null;
+  // Szukaj zadania aktualnie trwającego TERAZ (nie "pierwszego nieukończonego")
+  const now = new Date();
+  const currentMin = now.getHours() * 60 + now.getMinutes();
+  const activeTask = scheduledItems.find(item => !item.completed && currentMin >= item.start && currentMin < item.end) 
+    || scheduledItems.find(item => !item.completed) 
+    || null;
+  // Fix #4: Escape zamyka modale
+  React.useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') {
+        if (isZenOpen) setIsZenOpen(false);
+        if (isManualOpen) setIsManualOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [isZenOpen, isManualOpen]);
 
   return (
     <div className="app-container" style={{ display: 'flex', width: '100%', height: '100vh' }}>
@@ -179,6 +218,29 @@ function App() {
             </span>
           </div>
         </div>
+
+        {/* Toast "Cofnij usunięcie" */}
+        {deletedTask && (
+          <div style={{
+            position: 'fixed', bottom: '24px', left: '50%', transform: 'translateX(-50%)',
+            background: 'var(--surface)', border: '1px solid var(--border)',
+            borderRadius: '12px', padding: '12px 24px', display: 'flex', alignItems: 'center', gap: '16px',
+            zIndex: 3000, boxShadow: '0 12px 40px rgba(0,0,0,0.4)', animation: 'slideIn 0.3s ease'
+          }}>
+            <span style={{ fontSize: '13px', color: 'var(--text-main)' }}>
+              Usunięto: <strong>{deletedTask.name}</strong>
+            </span>
+            <button onClick={undoDelete} style={{
+              padding: '6px 16px', fontSize: '12px', fontWeight: '700',
+              background: 'var(--primary)', color: 'black', borderRadius: '8px',
+              border: 'none', cursor: 'pointer'
+            }}>Cofnij</button>
+            <button onClick={() => setDeletedTask(null)} style={{
+              background: 'transparent', border: 'none', color: 'var(--text-muted)',
+              fontSize: '14px', cursor: 'pointer', padding: '0 4px'
+            }}>✕</button>
+          </div>
+        )}
       </main>
     </div>
   );
