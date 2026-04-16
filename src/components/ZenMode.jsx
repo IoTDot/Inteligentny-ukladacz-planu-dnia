@@ -72,7 +72,7 @@ const ZenMode = ({ isOpen, onClose, activeTask }) => {
       animation: 'fadeIn 0.5s ease', color: 'white', padding: '40px'
     }}>
       <h1 style={{ fontSize: 'clamp(40px, 8vw, 100px)', fontWeight: '900', color: 'var(--primary)', textShadow: '0 0 50px var(--primary-glow)', letterSpacing: '-0.05em', textAlign: 'center', margin: 0, lineHeight: '1.1' }}>
-        {activeTask ? activeTask.name : "Czas wolny."}
+        {activeTask ? activeTask.name : "Czas na skupienie."}
       </h1>
       
       {activeTask && (
